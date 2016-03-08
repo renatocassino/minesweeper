@@ -1,0 +1,40 @@
+#campo {
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 40px;
+}
+
+#campo #result {
+	text-align:center;
+	margin-top:10px;
+	border-radius:10px;
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	box-shadow:3px 3px 2px #dfdfdf;
+}
+
+.block {
+	width:25px;
+	height:25px;
+	background: #339;
+	display: inline-block;
+	border: 1px solid #fff;
+	color: #fff;
+	cursor: pointer;
+}
+
+.block.lost {
+	background: #933;
+}
+
+.block.opened:not(.lost) {
+	background: #393;
+}
+
+.block:not(.lost,.opened):hover {
+	background: #55B;
+}
+
+.clearfix {
+	clear: both;
+}

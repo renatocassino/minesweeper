@@ -1,0 +1,63 @@
+td
+{
+  border: 1px solid #CCCCCC; 
+  width: 32px;
+  height: 32px;
+}
+
+td.alive
+{
+  background-color: #6B0000;
+}
+
+td.dead
+{
+  background-color: #F06161;
+}
+
+body {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  font-family: 'Lucida Console';
+  background-color: #B61818;
+  color: #6B0000;
+}
+
+table {
+  margin-right: auto;
+  margin-left: auto; 
+}
+
+h1 {
+  font-family: '3X5';
+}
+
+@font-face {
+  font-family: '3X5';
+  src: url('fonts/3X5.TTF');
+}
+
+a {
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+#help {
+  height: 450px;
+  width: 700px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -350px;
+  padding: 16px;
+  text-align: left;
+  color: #F06161;
+  border: 1px solid #CCCCCC;
+  background-color: #6B0000;
+}
+
+#help h3 {
+  text-align: center;
+}
