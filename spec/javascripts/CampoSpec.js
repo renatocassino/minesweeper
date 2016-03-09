@@ -111,5 +111,6 @@ describe("CampoMinado", function() {
       expect(game.bombs[2][0]).toBe(1);
       expect(game.bombs[2][2]).toBe(1);
     });
+
   });
 });
