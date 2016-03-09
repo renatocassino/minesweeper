@@ -1,3 +1,6 @@
+/**
+ *
+ */
 var game = {
 	$el: null,
 	bombs: [],
@@ -26,6 +29,7 @@ var game = {
 	drawBoard: function() {
 		var html = '<h1>Campo minado</h1>';
 
+		// Format [column][line]
 		for(var i=0;i<this.columns;i++) {
 			for(var j=0;j<this.lines;j++) {
 				html += this.appendBlock(i,j);
@@ -37,7 +41,7 @@ var game = {
 		this.$el.html(html);
 	},
 
-	appendBlock: function(line, column) {
+	appendBlock: function(column, line) {
 		return '<div class="block" id="'+column+'-'+line+'" data-column="' + column + '" data-line="' + line + '">&nbsp;</div>';
 	},
 
@@ -209,6 +213,17 @@ var game = {
 		}
 		return points;
 	},
+
+	drawBoardInConsole: function() {
+		consoleLog = '';
+		for(var j=0;j<this.lines;j++) {
+			for(var i=0;i<this.columns;i++) {
+				consoleLog += "["+this.bombs[i][j]+"]";
+			}
+			consoleLog += "\n";
+		}
+		console.log(consoleLog);
+	}
 }
 
 jQuery.fn.CampoMinado = function(columns, lines, qtBombs) {
