@@ -11,10 +11,8 @@
 #   - dist/**/*.js
 #
 src_files:
-    - public/javascripts/**/*.js
-    - public/js/jquery.js
+    - public/javascripts/*.js
     - public/js/campo.js
-    - public/js/custom.js
 
 # stylesheets
 #

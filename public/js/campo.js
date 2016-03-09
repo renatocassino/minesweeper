@@ -1,3 +1,6 @@
+/**
+ *
+ */
 var game = {
 	$el: null,
 	bombs: [],
@@ -26,8 +29,9 @@ var game = {
 	drawBoard: function() {
 		var html = '<h1>Campo minado</h1>';
 
-		for(var i=0;i<this.columns;i++) {
-			for(var j=0;j<this.lines;j++) {
+		// Format [column][line]
+		for(var j=0;j<this.lines;j++) {
+			for(var i=0;i<this.columns;i++) {
 				html += this.appendBlock(i,j);
 			}
 			html += this.breakLine();
@@ -37,7 +41,7 @@ var game = {
 		this.$el.html(html);
 	},
 
-	appendBlock: function(line, column) {
+	appendBlock: function(column, line) {
 		return '<div class="block" id="'+column+'-'+line+'" data-column="' + column + '" data-line="' + line + '">&nbsp;</div>';
 	},
 
@@ -109,10 +113,16 @@ var game = {
 		}
 	},
 
+	addBomb: function(column,line) {
+		this.locationBombs.push([column,line]);
+		this.bombs[column][line] = 'x';
+	},
+
 	/**
 	 * Logic Game
 	 */
 	initializeBombs: function() {
+		this.locationBombs = [];
 		this.bombs = new Array(this.columns);
 			for (var i = 0; i < this.columns; i++) {
 					this.bombs[i] = new Array(this.lines);
@@ -135,8 +145,7 @@ var game = {
 			var line = Math.floor((Math.random() * this.lines));
 
 			if(this.bombs[column][line] != 'x') {
-				this.bombs[column][line] = 'x';
-				this.locationBombs.push([column,line]);
+				this.addBomb(column,line);
 				bombs++;
 			}
 		}
@@ -155,8 +164,8 @@ var game = {
 	},
 
 	// Adicionar valores para os que estão em volta
-	addNextValue: function(points) {
-		var points = this.getArround(points,'x',false);
+	addNextValue: function(point) {
+		var points = this.getArround(point,'x',false);
 
 		for(var i=0; i < points.length; i++) {
 			var currentPoint = points[i];
@@ -209,6 +218,17 @@ var game = {
 		}
 		return points;
 	},
+
+	drawBoardInConsole: function() {
+		consoleLog = '';
+		for(var j=0;j<this.lines;j++) {
+			for(var i=0;i<this.columns;i++) {
+				consoleLog += "["+this.bombs[i][j]+"]";
+			}
+			consoleLog += "\n";
+		}
+		console.log(consoleLog);
+	}
 }
 
 jQuery.fn.CampoMinado = function(columns, lines, qtBombs) {

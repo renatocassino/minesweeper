@@ -2,28 +2,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     pkg: grunt.file.readJSON('package.json'),
-
-    concat: {
-      options: {
-        // define a string to put between each file in the concatenated output
-        separator: ';'
-      },
-      dist: {
-        // the files to concatenate
-        src: ['lib/js/*.js'],
-        // the location of the resulting JS file
-        dest: 'dist/<%= pkg.name %>.js'
-      }
-    },
-
-    uglify: {
-      dist: {
-        files: {
-          'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
-        }
-      }
-    },
-
     jasmine: {
     pivotal: {
       src : ['public/javascripts/*.js', 'public/js/*.js'],
