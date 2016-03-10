@@ -112,5 +112,47 @@ describe("CampoMinado", function() {
       expect(game.bombs[2][2]).toBe(1);
     });
 
+    it("distance between three bombs", function() {
+      game.setVars(jQuery('#game'), 4, 4, 0);
+      game.drawBoard();
+      game.initializeBombs();
+      // [x][3][1]
+      // [x][x][1]
+      // [2][2][1]
+      game.addBomb(0,0);
+      game.addBomb(0,1);
+      game.addBomb(1,1);
+
+      game.getDistances();
+
+      expect(game.bombs[1][0]).toBe(3);
+      expect(game.bombs[2][0]).toBe(1);
+      expect(game.bombs[2][1]).toBe(1);
+      expect(game.bombs[0][2]).toBe(2);
+      expect(game.bombs[1][2]).toBe(2);
+      expect(game.bombs[2][2]).toBe(1);
+    });
+
+    it("distance between three bombs", function() {
+      game.setVars(jQuery('#game'), 4, 4, 0);
+      game.drawBoard();
+      game.initializeBombs();
+      // [x][3][1]
+      // [x][x][1]
+      // [2][2][1]
+      game.addBomb(0,0);
+      game.addBomb(0,1);
+      game.addBomb(1,1);
+
+      game.getDistances();
+
+      expect(game.bombs[1][0]).toBe(3);
+      expect(game.bombs[2][0]).toBe(1);
+      expect(game.bombs[2][1]).toBe(1);
+      expect(game.bombs[0][2]).toBe(2);
+      expect(game.bombs[1][2]).toBe(2);
+      expect(game.bombs[2][2]).toBe(1);
+    });
+
   });
 });
