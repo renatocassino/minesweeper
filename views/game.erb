@@ -1,0 +1,26 @@
+<div id="campo"></div>
+
+<script src="./javascripts/jquery.js"></script>
+<script src="./js/campo.js"></script>
+<script>
+jQuery(document).ready(function() {
+  var level = '<%= @level %>';
+  var columns = 10;
+  var rows = 10;
+  var bombs = 10;
+  switch(level) {
+    case 'medium':
+      columns = 40;
+      rows = 40;
+      bombs = 140;
+    break;
+
+    case 'hard':
+      columns = 60;
+      rows = 60;
+      bombs = 260;
+    break;
+  }
+	jQuery('#campo').CampoMinado(columns,rows,bombs);
+});
+</script>
