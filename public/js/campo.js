@@ -27,7 +27,7 @@ var game = {
 	 *	Frontend
 	 */
 	drawBoard: function() {
-		var html = '<h1>Campo minado</h1>';
+		var html = '<h1>Minesweeper</h1>';
 
 		// Format [column][line]
 		for(var j=0;j<this.lines;j++) {
@@ -59,6 +59,7 @@ var game = {
 		});
 
 		this.$el.find('.block').bind("contextmenu",function(e){
+			e.preventDefault();
 			var value = $(this).html();
 
 			switch(value) {
@@ -67,8 +68,8 @@ var game = {
 				case '&nbsp;': $(this).html('!'); break;
 			}
 
-					return false;
-			});
+			return false;
+		});
 	},
 
 	checkBomb: function(self, el) {

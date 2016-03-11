@@ -11,7 +11,7 @@ describe("CampoMinado", function() {
       game.drawBoard();
 
       var result = jQuery('#game').find('h1').html();
-      expect('Campo minado').toBe(result);
+      expect('Minesweeper').toBe(result);
     });
 
     it("invisible field was created", function() {
@@ -155,4 +155,50 @@ describe("CampoMinado", function() {
     });
 
   });
+
+  describe("Test event", function() {
+    it("checking as a bomb in place", function() {
+      game.setVars(jQuery('#game'), 4, 4, 0);
+      game.drawBoard();
+      game.initializeBombs();
+      game.addEvents();
+
+      var block = jQuery('#game .block');
+
+      block.trigger('contextmenu');
+
+      expect(block.html()).toBe('!');
+    });
+
+    it("asking as a bomb in place", function() {
+      game.setVars(jQuery('#game'), 4, 4, 0);
+      game.drawBoard();
+      game.initializeBombs();
+      game.addEvents();
+
+      var block = jQuery('#game .block')
+
+      block.trigger('contextmenu');
+      block.trigger('contextmenu');
+
+      expect(block.html()).toBe('?');
+    });
+
+    it("removing ask a bomb in place", function() {
+      game.setVars(jQuery('#game'), 4, 4, 0);
+      game.drawBoard();
+      game.initializeBombs();
+      game.addEvents();
+
+      var block = jQuery('#game .block');
+
+      block.trigger('contextmenu');
+      block.trigger('contextmenu');
+      block.trigger('contextmenu');
+
+      expect(block.html()).toBe('&nbsp;');
+    });
+
+  });
+
 });
