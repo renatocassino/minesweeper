@@ -184,8 +184,6 @@ describe("Minesweeper", function() {
       Minesweeper.drawBoard();
       Minesweeper.initializeBombs();
       Minesweeper.addEvents();
-
-      window.alert = function(){return;};
     });
 
     it('is called on click', function() {
@@ -253,9 +251,6 @@ describe("Minesweeper", function() {
   });
 
   describe('Ending game', function() {
-    beforeEach(function() {
-      window.alert = function(){return;};
-    });
 
     it('adding class when lost a game', function() {
       var block = jQuery(jQuery('#game .block')[0]);
