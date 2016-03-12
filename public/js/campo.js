@@ -173,7 +173,7 @@ var game = {
 	 * @param point - Format [column, line]
 	 */
 	addNextValue: function(point) {
-		var points = this.getArround(point,'x',false);
+		var points = this.getAround(point,'x',false);
 
 		for(var i=0; i < points.length; i++) {
 			var currentPoint = points[i];
@@ -183,7 +183,7 @@ var game = {
 
 	// Remove os valores em volta com 0 bombas
 	removeNextCleanedArea: function(self,column,line) {
-		var positions = self.getArround([column,line],'x',false);
+		var positions = self.getAround([column,line],'x',false);
 
 		for(var i=0;i<positions.length;i++) {
 			var currentColumn = positions[i][0];
@@ -210,7 +210,7 @@ var game = {
 	 * @param equals - Consider true or false value in block comparing with param `match`
 	 * @return matrix - Array of points. Ex: [[0,0],[0,1][1,0][1,1]...]
 	 */
-	getArround: function(position, match, equals) {
+	getAround: function(position, match, equals) {
 		columnMin = Math.max(0, parseInt(position[0])-1);
 		columnMax = Math.min(this.columns-1, parseInt(position[0])+1);
 
@@ -218,8 +218,12 @@ var game = {
 		lineMax = Math.min(this.columns-1, parseInt(position[1])+1);
 
 		points = [];
-		for(var i=columnMin;i<=columnMax;i++) {
-			for(j=lineMin;j<=lineMax;j++) {
+		for(j=lineMin;j<=lineMax;j++) {
+			for(var i=columnMin;i<=columnMax;i++) {
+				if(position[0] == i && position[1] == j) {
+					continue;
+				}
+
 				if(equals) {
 					if(this.bombs[i][j] == match) {
 						points.push([i,j]);

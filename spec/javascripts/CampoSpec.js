@@ -398,4 +398,72 @@ describe("CampoMinado", function() {
     });
   });
 
+  describe('Testing get around', function() {
+    beforeEach(function() {
+      game.setVars(jQuery('#game'), 4, 4, 0);
+      game.drawBoard();
+      game.initializeBombs();
+      game.addEvents();
+
+      game.addBomb(1,1);
+      game.addBomb(2,2);
+      game.getDistances();
+    });
+
+    // [1][1][1][0]
+    // [1][x][2][1]
+    // [1][2][x][1]
+    // [0][1][1][1]
+
+    it('Testing get equals 1', function() {
+      var points = game.getAround([1,1], '1', true);
+      expect(points).toEqual([ [0,0],[1,0],[2,0],[0,1],[0,2] ]);
+    });
+
+    it('Testing get equals x', function() {
+      var points = game.getAround([2,2], 'x', true);
+      expect(points).toEqual([ [1,1] ]);
+    });
+
+    it('Testing get not equals 1', function() {
+      var points = game.getAround([1,1], '1', false);
+      expect(points).toEqual([ [2,1],[1,2],[2,2] ]);
+    });
+
+    it('Testing get not equals x', function() {
+      var points = game.getAround([2,2], 'x', false);
+      expect(points).toEqual([ [2,1],[3,1], [1,2],[3,2], [1,3],[2,3],[3,3] ]);
+    });
+
+    it('Testing in first column', function() {
+      var points = game.getAround([0,1], 'n', false); // n param to get all
+      expect(points).toEqual([ [0,0],[1,0], [1,1], [0,2],[1,2] ]);
+    });
+
+    it('Testing in first line', function() {
+      var points = game.getAround([1,0], 'n', false); // n param to get all
+      expect(points).toEqual([ [0,0],[2,0], [0,1],[1,1],[2,1] ]);
+    });
+
+    it('Testing in last column', function() {
+      var points = game.getAround([3,1], 'n', false); // n param to get all
+      expect(points).toEqual([ [2,0],[3,0], [2,1], [2,2],[3,2] ]);
+    });
+
+    it('Testing in last line', function() {
+      var points = game.getAround([1,3], 'n', false); // n param to get all
+      expect(points).toEqual([ [0,2],[1,2],[2,2], [0,3],[2,3] ]);
+    });
+
+    it('Testing first column and line', function() {
+      var points = game.getAround([0,0], 'n', false); // n param to get all
+      expect(points).toEqual([ [1,0],[0,1],[1,1] ]);
+    });
+
+    it('Testing last column and line', function() {
+      var points = game.getAround([3,3], 'n', false); // n param to get all
+      expect(points).toEqual([ [2,2],[3,2],[2,3] ]);
+    });
+  });
+
 });
