@@ -334,7 +334,67 @@ describe("CampoMinado", function() {
       expect(game.bombs[1][2]).toBe(2);
       expect(game.bombs[2][2]).toBe(2);
       expect(game.bombs[3][2]).toBe(1);
+    });
+  });
 
+  describe('Recursive clean area with no bombs', function() {
+    var expectValue = function(block, value) {
+      expect(block.hasClass('opened')).toBe(true);
+      expect(block.html()).toBe(value);
+    }
+
+    beforeEach(function() {
+      game.setVars(jQuery('#game'), 8, 8, 0);
+      game.drawBoard();
+      game.initializeBombs();
+      game.addEvents();
+    });
+
+    it('removing blocks with zeros', function() {
+      // [0][0][1][x]
+      // [0][0][1][1]
+      // [0][0][0][0]
+      game.addBomb(3,0);
+      game.getDistances();
+      var block = jQuery('#game #0-0');
+
+      block.trigger('click');
+
+      expectValue(jQuery('#game #0-0'), '0');
+      expectValue(jQuery('#game #1-0'), '0');
+      expectValue(jQuery('#game #0-1'), '0');
+      expectValue(jQuery('#game #1-1'), '0');
+      expectValue(jQuery('#game #0-2'), '0');
+      expectValue(jQuery('#game #1-2'), '0');
+      expectValue(jQuery('#game #2-2'), '0');
+      expectValue(jQuery('#game #3-2'), '0');
+      expectValue(jQuery('#game #4-2'), '0');
+
+      // Values with 1
+      expectValue(jQuery('#game #2-0'), '1');
+      expectValue(jQuery('#game #2-1'), '1');
+      expectValue(jQuery('#game #3-1'), '1');
+    });
+
+    it('checking opened blocks in recursivity', function() {
+      // [0][0][1][x]
+      // [0][0][1][1]
+      // [0][0][0][0]
+      game.addBomb(3,0);
+      game.getDistances();
+      var block = jQuery('#game #0-0');
+
+      var expectValue = function(block, value) {
+        expect(block.hasClass('opened')).toBe(true);
+        expect(block.html()).toBe(value);
+      }
+
+      block.trigger('click');
+
+      // Values with 1
+      expectValue(jQuery('#game #2-0'), '1');
+      expectValue(jQuery('#game #2-1'), '1');
+      expectValue(jQuery('#game #3-1'), '1');
     });
   });
 

@@ -202,7 +202,14 @@ var game = {
 		}
 	},
 
-	// Retorna as posições em volta do ponto corrente
+	/**
+	 * Return the around blocks considering a condition
+	 *
+	 * @param position - Must be in format [column, line]
+	 * @param match - String to test the conditional (0|<n>|x)
+	 * @param equals - Consider true or false value in block comparing with param `match`
+	 * @return matrix - Array of points. Ex: [[0,0],[0,1][1,0][1,1]...]
+	 */
 	getArround: function(position, match, equals) {
 		columnMin = Math.max(0, parseInt(position[0])-1);
 		columnMax = Math.min(this.columns-1, parseInt(position[0])+1);
