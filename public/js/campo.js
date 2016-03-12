@@ -1,11 +1,18 @@
 /**
- *
+ * Class to create the game
  */
-var game = {
+var Minesweeper = {
 	$el: null,
 	bombs: [],
 	locationBombs: [],
 
+	/**
+	 * Creating in easy way
+	 * @param el - jQuery element
+	 * @param columns - Number of columns
+	 * @param qtBombs - Number of bombs in the game
+	 * @return void
+	 */
 	init: function(el, columns, lines, qtBombs) {
 		this.setVars(el, columns, lines, qtBombs);
 
@@ -16,6 +23,14 @@ var game = {
 		this.addEvents();
 	},
 
+	/**
+	 * Set attributes to game
+	 * @param el - jQuery element
+	 * @param columns - Number of columns in the game
+	 * @param lines - Number of lines in the game
+	 * @param qtBombs - Number of bombs (Attention! Could not be more than blocks!)
+	 * @return void
+	 */
 	setVars: function(el, columns, lines, qtBombs) {
 		this.$el = el;
 		this.columns = columns;
@@ -24,7 +39,8 @@ var game = {
 	},
 
 	/**
-	 *	Frontend
+	 * Frontend to draw the board with html and css
+	 * @return void
 	 */
 	drawBoard: function() {
 		var html = '<h1>Minesweeper</h1>';
@@ -41,16 +57,25 @@ var game = {
 		this.$el.html(html);
 	},
 
+	/**
+	 * Append a block with id and datas
+	 * @return string
+	 */
 	appendBlock: function(column, line) {
 		return '<div class="block" id="'+column+'-'+line+'" data-column="' + column + '" data-line="' + line + '">&nbsp;</div>';
 	},
 
+	/**
+	 *	Break line with css
+	 * @return string
+	 */
 	breakLine: function() {
 		return '<div class="clearfix"></div>';
 	},
 
 	/**
-	 * Events
+	 * Events - Click and right click
+	 * @return void
 	 */
 	addEvents: function() {
 		self = this;
@@ -73,8 +98,9 @@ var game = {
 	},
 
 	/**
-	 * @param self Object game
+	 * @param self - The game
 	 * @param el - Block
+	 * @return void
 	 */
 	checkBomb: function(self, el) {
 		var spaceValue = el.html();
@@ -97,6 +123,13 @@ var game = {
 		self.checkIfWinGame(self);
 	},
 
+	/**
+	 * Ending the game
+	 * @param self - The game
+	 * @param lost - Boolean - If the user win or lost the game
+	 * @param el - jQuery element of the block
+	 * @return void
+	 */
 	endGame: function(self, lost, el) {
 		self.$el.find('.block').unbind("click");
 		self.$el.find('.block').unbind("contextmenu");
@@ -111,6 +144,11 @@ var game = {
 		}
 	},
 
+	/**
+	 * Checking if the user win the game after mark a block
+	 * @param self - The game
+	 * @return void
+	 */
 	checkIfWinGame: function(self) {
 		var qtPossibleBlocks = self.$el.find('.block:not(.opened)').length - self.qtBombs;
 		self.$el.find('#result').val('Falta(m) ' + qtPossibleBlocks + ' bloco(s).');
@@ -119,13 +157,20 @@ var game = {
 		}
 	},
 
+	/**
+	 * Adding a bomb to a block
+	 * @param column - Number of column
+	 * @param line - Number of line
+	 * @return void
+	 */
 	addBomb: function(column,line) {
 		this.locationBombs.push([column,line]);
 		this.bombs[column][line] = 'x';
 	},
 
 	/**
-	 * Logic Game
+	 * Initializing the game
+	 * @return void
 	 */
 	initializeBombs: function() {
 		this.locationBombs = [];
@@ -139,6 +184,10 @@ var game = {
 			}
 	},
 
+	/**
+	 * Generating random bombs
+	 * @return void
+	 */
 	generateBombs: function() {
 		var bombs = 0;
 
@@ -157,7 +206,10 @@ var game = {
 		}
 	},
 
-	// Adicionando os valores em volta das bombas
+	/**
+	 * Adding number of bombs around each block
+	 * @return void
+	 */
 	getDistances: function() {
 		var qt=this.locationBombs.length;
 
@@ -171,6 +223,7 @@ var game = {
 
 	/**
 	 * @param point - Format [column, line]
+	 * @return void
 	 */
 	addNextValue: function(point) {
 		var points = this.getAround(point,'x',false);
@@ -181,7 +234,13 @@ var game = {
 		}
 	},
 
-	// Remove os valores em volta com 0 bombas
+	/**
+	 * Recursivity to get around bombs with no bombs and check with 0
+	 * @param self - game
+	 * @param column - number of column
+	 * @param line - number of line
+	 * @return void
+	 */
 	removeNextCleanedArea: function(self,column,line) {
 		var positions = self.getAround([column,line],'x',false);
 
@@ -238,6 +297,10 @@ var game = {
 		return points;
 	},
 
+	/**
+	 * Draw board in console.log
+	 * @return void
+	 */
 	drawBoardInConsole: function() {
 		consoleLog = '';
 		for(var j=0;j<this.lines;j++) {
@@ -250,6 +313,6 @@ var game = {
 	}
 }
 
-jQuery.fn.CampoMinado = function(columns, lines, qtBombs) {
-	game.init($(this), columns, lines, qtBombs);
+jQuery.fn.minesweeper = function(columns, lines, qtBombs) {
+	Minesweeper.init($(this), columns, lines, qtBombs);
 };
