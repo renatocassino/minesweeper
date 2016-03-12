@@ -76,9 +76,6 @@ describe("CampoMinado", function() {
       game.addBomb(1,1);
       game.getDistances();
 
-      game.drawBoard();
-      game.addEvents();
-
       for(var i = 0; i< 3; i++) {
         for(var j=0; j< 3; j++) {
           if(i == 1 && j == 1) {
@@ -306,6 +303,38 @@ describe("CampoMinado", function() {
       game.checkIfWinGame(game);
 
       expect(game.endGame).not.toHaveBeenCalledWith();
+    });
+  });
+
+  describe('Adding next values with bombs', function() {
+    beforeEach(function() {
+      game.setVars(jQuery('#game'), 4, 4, 0);
+      game.drawBoard();
+      game.initializeBombs();
+      game.addEvents();
+    });
+
+    it('test next values in blocks', function() {
+      // [1][2][2][1]
+      // [1][x][x][1]
+      // [1][2][2][1]
+      for(var i=1;i<=2;i++) {
+        game.addBomb(i, 1);
+        game.addNextValue([i,1]);
+      }
+      game.addEvents();
+
+      expect(game.bombs[0][0]).toBe(1);
+      expect(game.bombs[1][0]).toBe(2);
+      expect(game.bombs[2][0]).toBe(2);
+      expect(game.bombs[3][0]).toBe(1);
+      expect(game.bombs[0][1]).toBe(1);
+      expect(game.bombs[3][1]).toBe(1);
+      expect(game.bombs[0][2]).toBe(1);
+      expect(game.bombs[1][2]).toBe(2);
+      expect(game.bombs[2][2]).toBe(2);
+      expect(game.bombs[3][2]).toBe(1);
+
     });
   });
 

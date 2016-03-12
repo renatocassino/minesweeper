@@ -169,7 +169,9 @@ var game = {
 		}
 	},
 
-	// Adicionar valores para os que estão em volta
+	/**
+	 * @param point - Format [column, line]
+	 */
 	addNextValue: function(point) {
 		var points = this.getArround(point,'x',false);
 
