@@ -56,10 +56,13 @@ describe("CampoMinado", function() {
   });
 
   describe("Check bombs", function() {
-    it("distance in zero bombs", function() {
+    beforeEach(function() {
       game.setVars(jQuery('#game'), 4, 4, 0);
       game.drawBoard();
       game.initializeBombs();
+    });
+
+    it("distance in zero bombs", function() {
       game.getDistances();
 
       expect(game.bombs[1][1]).toBe(0);
@@ -67,9 +70,6 @@ describe("CampoMinado", function() {
     });
 
     it("distance in one bomb", function() {
-      jQuery('body').append('<div id="game" style="display:none;"></div>');
-      game.setVars(jQuery('#game'), 4, 4, 0);
-      game.initializeBombs();
       // [1][1][1]
       // [1][x][1]
       // [1][1][1]
@@ -91,9 +91,6 @@ describe("CampoMinado", function() {
     });
 
     it("distance between two bombs", function() {
-      game.setVars(jQuery('#game'), 4, 4, 0);
-      game.drawBoard();
-      game.initializeBombs();
       // [1][2][1]
       // [x][2][x]
       // [1][2][1]
@@ -113,9 +110,6 @@ describe("CampoMinado", function() {
     });
 
     it("distance between three bombs", function() {
-      game.setVars(jQuery('#game'), 4, 4, 0);
-      game.drawBoard();
-      game.initializeBombs();
       // [x][3][1]
       // [x][x][1]
       // [2][2][1]
@@ -134,9 +128,6 @@ describe("CampoMinado", function() {
     });
 
     it("distance between three bombs", function() {
-      game.setVars(jQuery('#game'), 4, 4, 0);
-      game.drawBoard();
-      game.initializeBombs();
       // [x][3][1]
       // [x][x][1]
       // [2][2][1]
@@ -157,25 +148,19 @@ describe("CampoMinado", function() {
   });
 
   describe("Test event", function() {
-    it("checking as a bomb in place", function() {
+    beforeEach(function() {
       game.setVars(jQuery('#game'), 4, 4, 0);
       game.drawBoard();
-      game.initializeBombs();
       game.addEvents();
-
+    });
+    it("checking as a bomb in place", function() {
       var block = jQuery('#game .block');
 
       block.trigger('contextmenu');
-
       expect(block.html()).toBe('!');
     });
 
     it("asking as a bomb in place", function() {
-      game.setVars(jQuery('#game'), 4, 4, 0);
-      game.drawBoard();
-      game.initializeBombs();
-      game.addEvents();
-
       var block = jQuery('#game .block')
 
       block.trigger('contextmenu');
@@ -185,11 +170,6 @@ describe("CampoMinado", function() {
     });
 
     it("removing ask a bomb in place", function() {
-      game.setVars(jQuery('#game'), 4, 4, 0);
-      game.drawBoard();
-      game.initializeBombs();
-      game.addEvents();
-
       var block = jQuery('#game .block');
 
       block.trigger('contextmenu');
@@ -199,6 +179,134 @@ describe("CampoMinado", function() {
       expect(block.html()).toBe('&nbsp;');
     });
 
+  });
+
+  describe('Checking bomb', function() {
+    beforeEach(function() {
+      game.setVars(jQuery('#game'), 4, 4, 0);
+      game.drawBoard();
+      game.initializeBombs();
+      game.addEvents();
+
+      window.alert = function(){return;};
+    });
+
+    it('is called on click', function() {
+      spyOn(game, 'checkBomb');
+
+      var block = jQuery('#game .block');
+      block.trigger('click');
+
+      expect(game.checkBomb).toHaveBeenCalled();
+    });
+
+    it('return null if checked as "!"', function() {
+      var block = jQuery('#game .block');
+      block.trigger('contextmenu');
+
+      var finalValue = game.checkBomb(game, block);
+
+      expect(finalValue).toBeNull();
+    });
+
+    it('return null if checked as "?"', function() {
+      var block = jQuery('#game .block');
+      block.trigger('contextmenu');
+      block.trigger('contextmenu');
+
+      var finalValue = game.checkBomb(game, block);
+
+      expect(finalValue).toBeNull();
+    });
+
+    it('checking if lost the game', function() {
+      game.addBomb(0, 0);
+      var block = jQuery(jQuery('#game .block')[0]);
+      spyOn(game, 'endGame');
+
+      var finalValue = game.checkBomb(game, block);
+
+      expect(game.endGame).toHaveBeenCalledWith(game, true, block);
+    });
+
+    it('checking call win the game', function() {
+      var block = jQuery(jQuery('#game .block')[0]);
+      spyOn(game, 'checkIfWinGame');
+
+      var finalValue = game.checkBomb(game, block);
+
+      expect(game.checkIfWinGame).toHaveBeenCalled();
+    });
+
+    it('and marking around area with 0 bombs', function() {
+      var block = jQuery(jQuery('#game .block')[0]);
+      spyOn(game, 'removeNextCleanedArea');
+
+      var finalValue = game.checkBomb(game, block);
+
+      expect(game.removeNextCleanedArea).toHaveBeenCalledWith(game, 0, 0);
+    });
+
+    it('and marking block as opened', function() {
+      var block = jQuery(jQuery('#game .block')[0]);
+      var finalValue = game.checkBomb(game, block);
+
+      expect(block.hasClass('opened')).toBe(true);
+    });
+  });
+
+  describe('Ending game', function() {
+    beforeEach(function() {
+      window.alert = function(){return;};
+    });
+
+    it('adding class when lost a game', function() {
+      var block = jQuery(jQuery('#game .block')[0]);
+      game.endGame(game, true, block);
+
+      expect(block.hasClass('lost')).toBe(true);
+    });
+
+    it('changing text status', function() {
+      var block = jQuery(jQuery('#game .block')[0]);
+      var result = jQuery('#result');
+      game.endGame(game, true, block);
+
+      expect(result.val()).toBe('Kabooooooooooooom!');
+    });
+
+    it('changing text status when win the game', function() {
+      var block = jQuery(jQuery('#game .block')[0]);
+      var result = jQuery('#result');
+      game.endGame(game, false, block);
+
+      expect(result.val()).toBe('Você venceu!');
+    });
+  });
+
+  describe('Checking if win a game', function() {
+    beforeEach(function() {
+      game.setVars(jQuery('#game'), 2, 2, 0);
+      game.drawBoard();
+      game.initializeBombs();
+      game.addEvents();
+    });
+
+    it('close the game', function() {
+      spyOn(game, 'endGame');
+      jQuery('#game .block').addClass('opened');
+      game.checkIfWinGame(game);
+
+      expect(game.endGame).toHaveBeenCalledWith(game, false);
+    });
+
+    it('not close the game', function() {
+      spyOn(game, 'endGame');
+      jQuery('#game .block');
+      game.checkIfWinGame(game);
+
+      expect(game.endGame).not.toHaveBeenCalledWith();
+    });
   });
 
 });

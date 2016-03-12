@@ -72,8 +72,13 @@ var game = {
 		});
 	},
 
+	/**
+	 * @param self Object game
+	 * @param el - Block
+	 */
 	checkBomb: function(self, el) {
-		if(el.html() == '?' || el.html() == '!') return;
+		var spaceValue = el.html();
+		if(spaceValue == '?' || spaceValue == '!') return null;
 
 		el.addClass('opened');
 
