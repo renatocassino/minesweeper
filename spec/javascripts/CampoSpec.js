@@ -5,8 +5,8 @@ describe("Minesweeper", function() {
     jQuery('body').append('<style>#campo {margin: 0 auto;text-align: center;margin-top: 40px;}#campo #result {text-align:center;margin-top:10px;border-radius:10px;padding: 5px 10px;border: 1px solid #ccc;box-shadow:3px 3px 2px #dfdfdf;}.block {width:25px;height:25px;background: #339;display: inline-block;border: 1px solid #fff;color: #fff;cursor: pointer;}.block.lost {background: #933;}.block.opened:not(.lost) {background: #393;}.block:not(.lost,.opened):hover {background: #55B;}.clearfix {clear: both;}')
   });
 
-  describe("Verify if the", function() {
-    it("title was created", function() {
+  describe("When the game start", function() {
+    it("create the title", function() {
       Minesweeper.setVars(jQuery('#game'), 4, 4, 2);
       Minesweeper.drawBoard();
 
@@ -14,7 +14,7 @@ describe("Minesweeper", function() {
       expect('Minesweeper').toBe(result);
     });
 
-    it("invisible field was created", function() {
+    it("create the invisible field", function() {
       Minesweeper.setVars(jQuery('#game'), 4, 4, 2);
       Minesweeper.drawBoard();
 
@@ -22,17 +22,7 @@ describe("Minesweeper", function() {
       expect(1).toBe(result);
     });
 
-    it("invisible field was created", function() {
-      Minesweeper.setVars(jQuery('#game'), 4, 4, 2);
-      Minesweeper.drawBoard();
-
-      var result = jQuery('#game').find('#result').length;
-      expect(1).toBe(result);
-    });
-  });
-
-  describe("Validate if", function() {
-    it("the appendBlock has the correct attributes", function() {
+    it("set the attributes for blocks", function() {
       var block = Minesweeper.appendBlock(4, 2);
 
       var result = jQuery(block);
@@ -41,7 +31,7 @@ describe("Minesweeper", function() {
       expect(result.attr('data-column')).toBe('4');
     });
 
-    it("the drawBoard has the correct number of spaces", function() {
+    it("draw the board with spaces", function() {
       Minesweeper.setVars(jQuery('#game'), 4, 4, 2);
       Minesweeper.drawBoard();
 
@@ -49,27 +39,27 @@ describe("Minesweeper", function() {
       expect(16).toBe(result.length);
     });
 
-    it("isn't possible to set a number of bombs greater than spaces", function() {
+    it("alert error for a number of bombs greater than blocks", function() {
       Minesweeper.setVars(jQuery('#game'), 4, 4, 20);
       expect(function() {Minesweeper.generateBombs()}).toThrow();
     });
   });
 
-  describe("Check bombs", function() {
+  describe("When set bombs", function() {
     beforeEach(function() {
       Minesweeper.setVars(jQuery('#game'), 4, 4, 0);
       Minesweeper.drawBoard();
       Minesweeper.initializeBombs();
     });
 
-    it("distance in zero bombs", function() {
+    it("get 0 bombs to empty space", function() {
       Minesweeper.getDistances();
 
       expect(Minesweeper.bombs[1][1]).toBe(0);
       expect(Minesweeper.bombs[2][2]).toBe(0);
     });
 
-    it("distance in one bomb", function() {
+    it("get a block next to a bomb", function() {
       // [1][1][1]
       // [1][x][1]
       // [1][1][1]
@@ -87,7 +77,7 @@ describe("Minesweeper", function() {
       }
     });
 
-    it("distance between two bombs", function() {
+    it("get a block between 2 bombs", function() {
       // [1][2][1]
       // [x][2][x]
       // [1][2][1]
@@ -106,7 +96,7 @@ describe("Minesweeper", function() {
       expect(Minesweeper.bombs[2][2]).toBe(1);
     });
 
-    it("distance between three bombs", function() {
+    it("get a block with 3 bombs around", function() {
       // [x][3][1]
       // [x][x][1]
       // [2][2][1]
@@ -123,41 +113,22 @@ describe("Minesweeper", function() {
       expect(Minesweeper.bombs[1][2]).toBe(2);
       expect(Minesweeper.bombs[2][2]).toBe(1);
     });
-
-    it("distance between three bombs", function() {
-      // [x][3][1]
-      // [x][x][1]
-      // [2][2][1]
-      Minesweeper.addBomb(0,0);
-      Minesweeper.addBomb(0,1);
-      Minesweeper.addBomb(1,1);
-
-      Minesweeper.getDistances();
-
-      expect(Minesweeper.bombs[1][0]).toBe(3);
-      expect(Minesweeper.bombs[2][0]).toBe(1);
-      expect(Minesweeper.bombs[2][1]).toBe(1);
-      expect(Minesweeper.bombs[0][2]).toBe(2);
-      expect(Minesweeper.bombs[1][2]).toBe(2);
-      expect(Minesweeper.bombs[2][2]).toBe(1);
-    });
-
   });
 
-  describe("Test event", function() {
+  describe("When the gamer", function() {
     beforeEach(function() {
       Minesweeper.setVars(jQuery('#game'), 4, 4, 0);
       Minesweeper.drawBoard();
       Minesweeper.addEvents();
     });
-    it("checking as a bomb in place", function() {
+    it("check as a bomb in place with right click", function() {
       var block = jQuery('#game .block');
 
       block.trigger('contextmenu');
       expect(block.html()).toBe('!');
     });
 
-    it("asking as a bomb in place", function() {
+    it("mark as doubt in block", function() {
       var block = jQuery('#game .block')
 
       block.trigger('contextmenu');
@@ -166,7 +137,7 @@ describe("Minesweeper", function() {
       expect(block.html()).toBe('?');
     });
 
-    it("removing ask a bomb in place", function() {
+    it("removing the doubt to a empty block again", function() {
       var block = jQuery('#game .block');
 
       block.trigger('contextmenu');
@@ -178,7 +149,7 @@ describe("Minesweeper", function() {
 
   });
 
-  describe('Checking bomb', function() {
+  describe('When click in a block', function() {
     beforeEach(function() {
       Minesweeper.setVars(jQuery('#game'), 4, 4, 0);
       Minesweeper.drawBoard();
@@ -186,7 +157,7 @@ describe("Minesweeper", function() {
       Minesweeper.addEvents();
     });
 
-    it('is called on click', function() {
+    it('check if has a bomb', function() {
       spyOn(Minesweeper, 'checkBomb');
 
       var block = jQuery('#game .block');
@@ -195,7 +166,7 @@ describe("Minesweeper", function() {
       expect(Minesweeper.checkBomb).toHaveBeenCalled();
     });
 
-    it('return null if checked as "!"', function() {
+    it('cannot click if is marked as bomb', function() {
       var block = jQuery('#game .block');
       block.trigger('contextmenu');
 
@@ -204,7 +175,7 @@ describe("Minesweeper", function() {
       expect(finalValue).toBeNull();
     });
 
-    it('return null if checked as "?"', function() {
+    it('cannot click if marked as a doubt', function() {
       var block = jQuery('#game .block');
       block.trigger('contextmenu');
       block.trigger('contextmenu');
@@ -233,7 +204,7 @@ describe("Minesweeper", function() {
       expect(Minesweeper.checkIfWinGame).toHaveBeenCalled();
     });
 
-    it('and marking around area with 0 bombs', function() {
+    it('marking around area with 0 bombs', function() {
       var block = jQuery(jQuery('#game .block')[0]);
       spyOn(Minesweeper, 'removeNextCleanedArea');
 
@@ -242,7 +213,7 @@ describe("Minesweeper", function() {
       expect(Minesweeper.removeNextCleanedArea).toHaveBeenCalledWith(Minesweeper, 0, 0);
     });
 
-    it('and marking block as opened', function() {
+    it('marking block as opened', function() {
       var block = jQuery(jQuery('#game .block')[0]);
       var finalValue = Minesweeper.checkBomb(Minesweeper, block);
 
@@ -250,9 +221,9 @@ describe("Minesweeper", function() {
     });
   });
 
-  describe('Ending game', function() {
+  describe('When end the game', function() {
 
-    it('adding class when lost a game', function() {
+    it('adding class to lost', function() {
       var block = jQuery(jQuery('#game .block')[0]);
       Minesweeper.endGame(Minesweeper, true, block);
 
@@ -276,7 +247,7 @@ describe("Minesweeper", function() {
     });
   });
 
-  describe('Checking if win a game', function() {
+  describe('When win the game', function() {
     beforeEach(function() {
       Minesweeper.setVars(jQuery('#game'), 2, 2, 0);
       Minesweeper.drawBoard();
@@ -301,7 +272,7 @@ describe("Minesweeper", function() {
     });
   });
 
-  describe('Adding next values with bombs', function() {
+  describe('When add a bomb in a block', function() {
     beforeEach(function() {
       Minesweeper.setVars(jQuery('#game'), 4, 4, 0);
       Minesweeper.drawBoard();
@@ -309,7 +280,7 @@ describe("Minesweeper", function() {
       Minesweeper.addEvents();
     });
 
-    it('test next values in blocks', function() {
+    it('add a bomb in around blocks', function() {
       // [1][2][2][1]
       // [1][x][x][1]
       // [1][2][2][1]
@@ -332,11 +303,11 @@ describe("Minesweeper", function() {
     });
   });
 
-  describe('Recursive clean area with no bombs', function() {
+  describe('When check an empty block', function() {
     var expectValue = function(block, value) {
       expect(block.hasClass('opened')).toBe(true);
       expect(block.html()).toBe(value);
-    }
+    };
 
     beforeEach(function() {
       Minesweeper.setVars(jQuery('#game'), 8, 8, 0);
@@ -345,7 +316,7 @@ describe("Minesweeper", function() {
       Minesweeper.addEvents();
     });
 
-    it('removing blocks with zeros', function() {
+    it('marking around as checked', function() {
       // [0][0][1][x]
       // [0][0][1][1]
       // [0][0][0][0]
@@ -370,30 +341,9 @@ describe("Minesweeper", function() {
       expectValue(jQuery('#game #2-1'), '1');
       expectValue(jQuery('#game #3-1'), '1');
     });
-
-    it('checking opened blocks in recursivity', function() {
-      // [0][0][1][x]
-      // [0][0][1][1]
-      // [0][0][0][0]
-      Minesweeper.addBomb(3,0);
-      Minesweeper.getDistances();
-      var block = jQuery('#game #0-0');
-
-      var expectValue = function(block, value) {
-        expect(block.hasClass('opened')).toBe(true);
-        expect(block.html()).toBe(value);
-      }
-
-      block.trigger('click');
-
-      // Values with 1
-      expectValue(jQuery('#game #2-0'), '1');
-      expectValue(jQuery('#game #2-1'), '1');
-      expectValue(jQuery('#game #3-1'), '1');
-    });
   });
 
-  describe('Testing get around', function() {
+  describe('When get around block', function() {
     beforeEach(function() {
       Minesweeper.setVars(jQuery('#game'), 4, 4, 0);
       Minesweeper.drawBoard();
@@ -410,55 +360,54 @@ describe("Minesweeper", function() {
     // [1][2][x][1]
     // [0][1][1][1]
 
-    it('Testing get equals 1', function() {
+    it('with value equals 1', function() {
       var points = Minesweeper.getAround([1,1], '1', true);
       expect(points).toEqual([ [0,0],[1,0],[2,0],[0,1],[0,2] ]);
     });
 
-    it('Testing get equals x', function() {
+    it('with value equals x', function() {
       var points = Minesweeper.getAround([2,2], 'x', true);
       expect(points).toEqual([ [1,1] ]);
     });
 
-    it('Testing get not equals 1', function() {
+    it('with values different than 1', function() {
       var points = Minesweeper.getAround([1,1], '1', false);
       expect(points).toEqual([ [2,1],[1,2],[2,2] ]);
     });
 
-    it('Testing get not equals x', function() {
+    it('with values different than x', function() {
       var points = Minesweeper.getAround([2,2], 'x', false);
       expect(points).toEqual([ [2,1],[3,1], [1,2],[3,2], [1,3],[2,3],[3,3] ]);
     });
 
-    it('Testing in first column', function() {
+    it('in the first column', function() {
       var points = Minesweeper.getAround([0,1], 'n', false); // n param to get all
       expect(points).toEqual([ [0,0],[1,0], [1,1], [0,2],[1,2] ]);
     });
 
-    it('Testing in first line', function() {
+    it('in the first line', function() {
       var points = Minesweeper.getAround([1,0], 'n', false); // n param to get all
       expect(points).toEqual([ [0,0],[2,0], [0,1],[1,1],[2,1] ]);
     });
 
-    it('Testing in last column', function() {
+    it('in the last column', function() {
       var points = Minesweeper.getAround([3,1], 'n', false); // n param to get all
       expect(points).toEqual([ [2,0],[3,0], [2,1], [2,2],[3,2] ]);
     });
 
-    it('Testing in last line', function() {
+    it('in the last line', function() {
       var points = Minesweeper.getAround([1,3], 'n', false); // n param to get all
       expect(points).toEqual([ [0,2],[1,2],[2,2], [0,3],[2,3] ]);
     });
 
-    it('Testing first column and line', function() {
+    it('in the first column and line', function() {
       var points = Minesweeper.getAround([0,0], 'n', false); // n param to get all
       expect(points).toEqual([ [1,0],[0,1],[1,1] ]);
     });
 
-    it('Testing last column and line', function() {
+    it('in the last column and line', function() {
       var points = Minesweeper.getAround([3,3], 'n', false); // n param to get all
       expect(points).toEqual([ [2,2],[3,2],[2,3] ]);
     });
   });
-
 });
