@@ -1,3 +1,6 @@
+// var jQuery = require('jquery');
+// var jsdom = require('jsdom');
+
 describe("Minesweeper", function() {
   beforeEach(function() {
     window.alert = function(message) {console.log(message);};
