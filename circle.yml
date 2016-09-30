@@ -1,6 +1,6 @@
 machine:
   node:
-    version: v0.11.13
+    version: v5.6.0
   environment:
     COVERALLS_REPO_TOKEN: "xxx"
     CIRCLE_ARTIFACTS: "~/node-p2pool/coverage"
@@ -9,6 +9,8 @@ test:
     - gulp test
 dependencies:
   pre:
+    - export DISPLAY=:99.0
+    - sh -e /etc/init.d/xvfb start
     - npm install
 general:
   artifacts:
