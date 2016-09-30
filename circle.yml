@@ -1,0 +1,15 @@
+machine:
+  node:
+    version: v0.11.13
+  environment:
+    COVERALLS_REPO_TOKEN: "xxx"
+    CIRCLE_ARTIFACTS: "~/node-p2pool/coverage"
+test:
+  override:
+    - gulp test
+dependencies:
+  pre:
+    - npm install
+general:
+  artifacts:
+    - "coverage" # relative to the user's home directory
