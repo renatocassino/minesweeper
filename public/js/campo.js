@@ -78,7 +78,7 @@ var Minesweeper = {
 	 * @return void
 	 */
 	addEvents: function() {
-		self = this;
+		var self = this;
 		this.$el.find('.block').click(function() {
 			self.checkBomb(self,$(this));
 		});
@@ -104,7 +104,7 @@ var Minesweeper = {
 	 */
 	checkBomb: function(self, el) {
 		var spaceValue = el.html();
-		if(spaceValue == '?' || spaceValue == '!') return null;
+		if(spaceValue === '?' || spaceValue === '!') return null;
 
 		el.addClass('opened');
 
@@ -114,10 +114,10 @@ var Minesweeper = {
 		var value = self.bombs[column][line];
 		el.html(value);
 
-		if(value == 'x') {
+		if('x' === value) {
 			self.endGame(self, true, el);
 			return;
-		} else if(parseInt(value) == 0) {
+		} else if(0 === parseInt(value)) {
 			self.removeNextCleanedArea(self,column,line);
 		}
 		self.checkIfWinGame(self);
@@ -152,7 +152,7 @@ var Minesweeper = {
 	checkIfWinGame: function(self) {
 		var qtPossibleBlocks = self.$el.find('.block:not(.opened)').length - self.qtBombs;
 		self.$el.find('#result').val('Falta(m) ' + qtPossibleBlocks + ' bloco(s).');
-		if(qtPossibleBlocks == 0) {
+		if(qtPossibleBlocks === 0) {
 			self.endGame(self, false);
 		}
 	},
@@ -199,7 +199,7 @@ var Minesweeper = {
 			var column = Math.floor((Math.random() * this.columns));
 			var line = Math.floor((Math.random() * this.lines));
 
-			if(this.bombs[column][line] != 'x') {
+			if(this.bombs[column][line] !== 'x') {
 				this.addBomb(column,line);
 				bombs++;
 			}
@@ -254,7 +254,7 @@ var Minesweeper = {
 				element.addClass('opened');
 				element.html(self.bombs[currentColumn][currentLine]);
 
-				if(parseInt(self.bombs[currentColumn][currentLine]) == 0) {
+				if(parseInt(self.bombs[currentColumn][currentLine]) === 0) {
 					self.removeNextCleanedArea(self,currentColumn,currentLine);
 				}
 			}
@@ -279,7 +279,7 @@ var Minesweeper = {
 		points = [];
 		for(j=lineMin;j<=lineMax;j++) {
 			for(var i=columnMin;i<=columnMax;i++) {
-				if(position[0] == i && position[1] == j) {
+				if(position[0] === i && position[1] === j) {
 					continue;
 				}
 
