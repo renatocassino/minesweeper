@@ -1,3 +1,5 @@
-## other configuration excluded from example...
+engines:
+  eslint:
+    enabled: true
 exclude_paths:
   - "lib/vendor"
